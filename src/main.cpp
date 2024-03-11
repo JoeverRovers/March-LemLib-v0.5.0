@@ -209,7 +209,7 @@ void close_side_auton() {}
 
 
 void autonomous() {
-	// chassis.turnToHeading(90, 4000, 4000);
+	chassis.turnToHeading(90, 4000, 4000);
 	// chassis.moveToPoint(0, 30, 4000);
 	chassis.moveToPoint(25, 25, 4000);
 }
