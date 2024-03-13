@@ -10,7 +10,7 @@ pros::Motor lM(12, pros::E_MOTOR_GEARSET_06, false); // left middle motor. port 
 pros::Motor lB(13, pros::E_MOTOR_GEARSET_06, true); // left back motor. port 1, reversed
 pros::Motor rF(19, pros::E_MOTOR_GEARSET_06, false); // right front motor. port 2
 pros::Motor rM(20, pros::E_MOTOR_GEARSET_06, true); // right middle motor. port 11
-pros::Motor rB(21, pros::E_MOTOR_GEARSET_06, false); // right back motor. port 13
+pros::Motor rB(9, pros::E_MOTOR_GEARSET_06, false); // right back motor. port 13
 
 //intake
 pros::Motor intake(3, pros::E_MOTOR_GEAR_BLUE, true);
@@ -38,21 +38,21 @@ pros::Imu imu1(7);
 
 // tracking wheels
 // Encoder
-pros::Rotation l_enc(16, true); // horizontal tracking wheel encoder. Rotation sensor, port 15, reversed (negative signs don't work due to a pros bug)
-pros::Rotation r_enc(15, false);
-//pros::Rotation h_enc(15, true);
+pros::Rotation l_enc(15, false); // horizontal tracking wheel encoder. Rotation sensor, port 15, reversed (negative signs don't work due to a pros bug)
+// pros::Rotation r_enc(15, false);
+pros::Rotation h_enc(11, true);
 
 
 // horizontal tracking wheel. 2.00" diameter, 3.7" offset, back of the robot (negative)
-lemlib::TrackingWheel l_tracking_wheel(&l_enc, 2, 3, 1);
-lemlib::TrackingWheel r_tracking_wheel(&r_enc, 2, -3, 1);
-// //lemlib::TrackingWheel h_tracking_wheel(&h_enc, 2.75, 0, 1);
+lemlib::TrackingWheel l_tracking_wheel(&l_enc, 2, -2.5, 1);
+// lemlib::TrackingWheel r_tracking_wheel(&r_enc, 2, -3, 1);
+lemlib::TrackingWheel h_tracking_wheel(&h_enc, 2, -8.5, 1);
 
 // odometry struct
 lemlib::OdomSensors sensors {
     &l_tracking_wheel, //&l_tracking_wheel, // vertical tracking wheel 1
-    &r_tracking_wheel, // vertical tracking wheel 2
-    nullptr, //&h_tracking_wheel, // horizontal tracking wheel 1
+    nullptr, // vertical tracking wheel 2
+    &h_tracking_wheel, // horizontal tracking wheel 1
     nullptr, // we don't have a second tracking wheel, so we set it to nullptr
     &imu1, // inertial sensor
 };
@@ -156,12 +156,14 @@ void initialize() {
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+            pros::lcd::print(3, "imutheta: %f", imu1.get_rotation()); // heading
             // log position telemetry
             lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
             // delay to save resources
             pros::delay(50);
         }
     });
+    chassis.setPose(-12, -61, 0);
 }
 
 
@@ -207,11 +209,21 @@ void close_side_auton() {}
  * from where it left off.
  */
 
+pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 void autonomous() {
-	chassis.turnToHeading(90, 4000, 4000);
-	// chassis.moveToPoint(0, 30, 4000);
-	chassis.moveToPoint(25, 25, 4000);
+	// chassis.moveToPoint(36, -36, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    // chassis.moveToPoint(36, 12, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    // chassis.moveToPoint(-12, 12, 4000);
+    // chassis.moveToPose(-12, -61, 180, 4000);
+    chassis.moveToPose(-12, 0, 0, 4000);
+    for(int i = 0; i < 5; i++){
+        chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
+        chassis.moveToPose(-12, 0, 0, 4000);
+    }
+    chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
+    
+    // chassis.moveToPose(0, 12, 180, 4000);
 }
 
 /**
@@ -227,6 +239,3 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
-
-}
