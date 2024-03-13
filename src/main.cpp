@@ -163,6 +163,7 @@ void initialize() {
             pros::delay(50);
         }
     });
+    // chassis.setPose(0, 0, 0);
     chassis.setPose(-12, -61, 0);
 }
 
@@ -183,7 +184,9 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize() {
+
+}
 
 
 // Auton Lists
@@ -212,16 +215,17 @@ void close_side_auton() {}
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 void autonomous() {
-	// chassis.moveToPoint(36, -36, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    // chassis.moveToPoint(36, 12, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    // chassis.moveToPoint(-12, 12, 4000);
-    // chassis.moveToPose(-12, -61, 180, 4000);
-    chassis.moveToPose(-12, 0, 0, 4000);
-    for(int i = 0; i < 5; i++){
-        chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
-        chassis.moveToPose(-12, 0, 0, 4000);
-    }
-    chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
+	chassis.moveToPoint(36, -36, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    chassis.moveToPoint(36, 12, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    chassis.moveToPoint(-12, 12, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    chassis.moveToPose(-12, -61, 180, 4000);
+    chassis.turnToHeading(0, 4000);
+    // chassis.moveToPose(-12, 0, 0, 4000);
+    // for(int i = 0; i < 5; i++){
+    //     chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
+    //     chassis.moveToPose(-12, 0, 0, 4000);
+    // }
+    // chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
     
     // chassis.moveToPose(0, 12, 180, 4000);
 }
@@ -239,3 +243,9 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+void opcontrol(){
+    while(true){
+        chassis.tank(controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)*127, controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)*127);
+    }
+
+}
