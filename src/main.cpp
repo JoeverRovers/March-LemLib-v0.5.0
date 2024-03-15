@@ -214,12 +214,30 @@ void close_side_auton() {}
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
+ASSET(path1v1_txt);
+ASSET(path2_txt);
+
 void autonomous() {
-	chassis.moveToPoint(36, -36, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    chassis.moveToPoint(36, 12, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    chassis.moveToPoint(-12, 12, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    chassis.moveToPose(-12, -61, 180, 4000);
-    chassis.turnToHeading(0, 4000);
+    chassis.follow(path1v1_txt, 15, 4000, true);
+    chassis.follow(path2_txt, 15, 7000, false);
+
+	// chassis.moveToPoint(-12, 15, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    // // chassis.waitUntil(35);
+    // // raiseFrontWings();
+    // chassis.moveToPoint(14, 15, 4000, {.minSpeed = 25});
+    // chassis.moveToPoint(-12, 15, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
+    // chassis.moveToPoint(-12, -36, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
+    // chassis.moveToPoint(23, -35, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
+    // chassis.moveToPoint(24, -6, 4000, {.forwards = false});
+
+    // chassis.waitUntil(10);
+    // raiseBackWings();
+    // chassis.moveToPoint(-12, 12, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    // chassis.waitUntilDone();
+    // lowerFrontWings();
+    // lowerBackWings();
+    // chassis.moveToPose(-12, -61, 180, 4000);
+    // chassis.turnToHeading(0, 4000);
     // chassis.moveToPose(-12, 0, 0, 4000);
     // for(int i = 0; i < 5; i++){
     //     chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
@@ -245,7 +263,7 @@ void autonomous() {
  */
 void opcontrol(){
     while(true){
-        chassis.tank(controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)*127, controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)*127);
+        chassis.arcade(controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)*50, controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X)*50);
     }
 
 }
