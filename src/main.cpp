@@ -164,7 +164,7 @@ void initialize() {
         }
     });
     // chassis.setPose(0, 0, 0);
-    chassis.setPose(-12, -61, 0);
+    chassis.setPose(12, -61, -90);
 }
 
 
@@ -218,8 +218,20 @@ ASSET(path1v1_txt);
 ASSET(path2_txt);
 
 void autonomous() {
-    chassis.follow(path1v1_txt, 15, 4000, true);
-    chassis.follow(path2_txt, 15, 7000, false);
+
+
+
+
+
+    // chassis.moveToPose(6, -60, -90, 2000, {.minSpeed = 25, .earlyExitRange = 3});
+    // chassis.moveToPose(54, -50, -135, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 10});
+    // chassis.turnToHeading(-180, 1000);
+
+
+
+    
+    // chassis.follow(path1v1_txt, 15, 4000, true);
+    // chassis.follow(path2_txt, 15, 7000, false);
 
 	// chassis.moveToPoint(-12, 15, 4000, {.minSpeed = 25, .earlyExitRange = 20});
     // // chassis.waitUntil(35);
