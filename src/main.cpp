@@ -164,7 +164,7 @@ void initialize() {
         }
     });
     // chassis.setPose(0, 0, 0);
-    chassis.setPose(12, -61, -90);
+    chassis.setPose(34, -54, 0);
 }
 
 
@@ -219,6 +219,20 @@ ASSET(path2_txt);
 
 void autonomous() {
 
+    chassis.moveToPoint(23, 0, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    chassis.moveToPose(36, -60, -45, 4000);
+    chassis.moveToPose(0, -60, 90, 4000);
+
+    //pure pursuit the rest
+
+
+    chassis.moveToPoint(58, -43, 1000, {.forwards = true});
+    chassis.moveToPose(59, -21, 0, 4000);
+    chassis.moveToPoint(58, -43, 1000, {.forwards = false});
+
+    //more pure pursuit
+
+
 
 
 
@@ -233,10 +247,10 @@ void autonomous() {
     // chassis.follow(path1v1_txt, 15, 4000, true);
     // chassis.follow(path2_txt, 15, 7000, false);
 
-	// chassis.moveToPoint(-12, 15, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    // // chassis.waitUntil(35);
-    // // raiseFrontWings();
-    // chassis.moveToPoint(14, 15, 4000, {.minSpeed = 25});
+	chassis.moveToPoint(-12, 15, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    chassis.waitUntil(35);
+    raiseFrontWings();
+    chassis.moveToPoint(14, 15, 4000, {.minSpeed = 25});
     // chassis.moveToPoint(-12, 15, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
     // chassis.moveToPoint(-12, -36, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
     // chassis.moveToPoint(23, -35, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
