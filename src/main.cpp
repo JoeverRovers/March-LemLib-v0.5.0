@@ -214,23 +214,31 @@ void close_side_auton() {}
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-ASSET(path1v1_txt);
+ASSET(firstPath_txt);
 ASSET(path2_txt);
 
 void autonomous() {
 
-    chassis.moveToPoint(23, 0, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    chassis.moveToPose(36, -60, -45, 4000);
-    chassis.moveToPose(0, -60, 90, 4000);
+    // chassis.turnToHeading(-45, 4000);
+
+    chassis.moveToPoint(23, 0, 3000, {.minSpeed = 15, .earlyExitRange = 15});
+    chassis.moveToPoint(36, -50, 4000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 25});
+    chassis.turnToHeading(45, 1000, {.minSpeed = 5, .earlyExitRange = 10});
+    chassis.moveToPose(0, -60, -90, 4000);
 
     //pure pursuit the rest
+    chassis.follow(firstPath_txt, 9, 4000, false);
+    pros::delay(3000);
 
 
     chassis.moveToPoint(58, -43, 1000, {.forwards = true});
+    pros::delay(3000);
     chassis.moveToPose(59, -21, 0, 4000);
+    pros::delay(3000);
     chassis.moveToPoint(58, -43, 1000, {.forwards = false});
+    pros::delay(3000);
 
-    //more pure pursuit
+    // more pure pursuit
 
 
 
@@ -247,10 +255,10 @@ void autonomous() {
     // chassis.follow(path1v1_txt, 15, 4000, true);
     // chassis.follow(path2_txt, 15, 7000, false);
 
-	chassis.moveToPoint(-12, 15, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    chassis.waitUntil(35);
-    raiseFrontWings();
-    chassis.moveToPoint(14, 15, 4000, {.minSpeed = 25});
+	// chassis.moveToPoint(-12, 15, 4000, {.minSpeed = 25, .earlyExitRange = 20});
+    // chassis.waitUntil(35);
+    // raiseFrontWings();
+    // chassis.moveToPoint(14, 15, 4000, {.minSpeed = 25});
     // chassis.moveToPoint(-12, 15, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
     // chassis.moveToPoint(-12, -36, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
     // chassis.moveToPoint(23, -35, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
