@@ -13,7 +13,7 @@ pros::Motor rM(20, pros::E_MOTOR_GEARSET_06, true); // right middle motor. port 
 pros::Motor rB(9, pros::E_MOTOR_GEARSET_06, false); // right back motor. port 13
 
 //intake
-pros::Motor intake(3, pros::E_MOTOR_GEAR_BLUE, true);
+pros::Motor intake(5, pros::E_MOTOR_GEAR_BLUE, false);
 pros::ADIDigitalOut backLeft('F');
 pros::ADIDigitalOut backRight('H');
 pros::ADIDigitalOut frontLeft('C');
@@ -196,7 +196,55 @@ void auton_Skills() {
 
 }
 
-void far_side_auton() {}
+ASSET(firstPathv2_txt);
+ASSET(path2_txt);
+
+void far_side_auton() {
+    intakeIn();
+    chassis.moveToPoint(23, 0, 3000, {.minSpeed = 5, .earlyExitRange = 5}, false);
+    chassis.moveToPoint(36, -50, 4000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 15});
+    chassis.turnToHeading(45, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+    intakeOut();
+    pros::delay(400);
+    intakeStop();
+    chassis.moveToPose(0, -60, -90, 4000, {.minSpeed = 70, .earlyExitRange = 3}, false);
+    intakeIn();
+    // chassis.follow(firstPathv2_txt, 9, 4000, false);
+    chassis.moveToPoint(48, -58, 4000, {.forwards = false, .minSpeed = 30, .earlyExitRange = 15});
+    lowerBackWings();
+    chassis.turnToHeading(-45, 1000, {.minSpeed = 20, .earlyExitRange = 10}, false);
+    chassis.moveToPose(60, -20, -180, 3000, {.forwards = false, .minSpeed = 70, .earlyExitRange = 3});
+
+    intakeStop();
+    chassis.moveToPoint(60, -43, 1000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 15});
+    chassis.turnToHeading(0, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+    chassis.moveToPoint(60, -20, 4000, {.minSpeed = 20, .earlyExitRange = 3}, false);
+    intakeOut();
+    pros::delay(400);
+    intakeStop();
+    chassis.moveToPoint(58, -43, 1000, {.forwards = false, .minSpeed = 15, .earlyExitRange = 15}, false);
+    chassis.turnToHeading(-60, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+
+    chassis.moveToPoint(4, -20, 4000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
+    intakeIn();
+    chassis.turnToHeading(90, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+    intakeStop();
+    chassis.moveToPoint(48, 0, 2000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
+    intakeOut();
+    pros::delay(400);
+    intakeStop();
+    chassis.turnToHeading(-90, 1000, {.minSpeed = 5, .earlyExitRange = 10});
+    chassis.moveToPoint(4, 4, 4000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
+    intakeIn();
+    chassis.turnToHeading(90, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+    intakeStop();
+    chassis.moveToPoint(48, 0, 2000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
+    intakeOut();
+    pros::delay(400);
+    intakeStop();
+
+    
+}
 
 void close_side_auton() {}
 
@@ -214,72 +262,8 @@ void close_side_auton() {}
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-ASSET(firstPath_txt);
-ASSET(path2_txt);
-
 void autonomous() {
-
-    // chassis.turnToHeading(-45, 4000);
-
-    chassis.moveToPoint(23, 0, 3000, {.minSpeed = 15, .earlyExitRange = 15});
-    chassis.moveToPoint(36, -50, 4000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 25});
-    chassis.turnToHeading(45, 1000, {.minSpeed = 5, .earlyExitRange = 10});
-    chassis.moveToPose(0, -60, -90, 4000);
-
-    //pure pursuit the rest
-    chassis.follow(firstPath_txt, 9, 4000, false);
-    pros::delay(3000);
-
-
-    chassis.moveToPoint(58, -43, 1000, {.forwards = true});
-    pros::delay(3000);
-    chassis.moveToPose(59, -21, 0, 4000);
-    pros::delay(3000);
-    chassis.moveToPoint(58, -43, 1000, {.forwards = false});
-    pros::delay(3000);
-
-    // more pure pursuit
-
-
-
-
-
-
-    // chassis.moveToPose(6, -60, -90, 2000, {.minSpeed = 25, .earlyExitRange = 3});
-    // chassis.moveToPose(54, -50, -135, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 10});
-    // chassis.turnToHeading(-180, 1000);
-
-
-
-    
-    // chassis.follow(path1v1_txt, 15, 4000, true);
-    // chassis.follow(path2_txt, 15, 7000, false);
-
-	// chassis.moveToPoint(-12, 15, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    // chassis.waitUntil(35);
-    // raiseFrontWings();
-    // chassis.moveToPoint(14, 15, 4000, {.minSpeed = 25});
-    // chassis.moveToPoint(-12, 15, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
-    // chassis.moveToPoint(-12, -36, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
-    // chassis.moveToPoint(23, -35, 4000, {.forwards = false, .minSpeed = 25, .earlyExitRange = 15});
-    // chassis.moveToPoint(24, -6, 4000, {.forwards = false});
-
-    // chassis.waitUntil(10);
-    // raiseBackWings();
-    // chassis.moveToPoint(-12, 12, 4000, {.minSpeed = 25, .earlyExitRange = 20});
-    // chassis.waitUntilDone();
-    // lowerFrontWings();
-    // lowerBackWings();
-    // chassis.moveToPose(-12, -61, 180, 4000);
-    // chassis.turnToHeading(0, 4000);
-    // chassis.moveToPose(-12, 0, 0, 4000);
-    // for(int i = 0; i < 5; i++){
-    //     chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
-    //     chassis.moveToPose(-12, 0, 0, 4000);
-    // }
-    // chassis.moveToPose(-12, -61, 0, 4000, {.forwards = false});
-    
-    // chassis.moveToPose(0, 12, 180, 4000);
+    far_side_auton();
 }
 
 /**
@@ -297,7 +281,14 @@ void autonomous() {
  */
 void opcontrol(){
     while(true){
-        chassis.arcade(controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)*50, controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X)*50);
+        chassis.arcade(controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)*10, controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X)*10);
+        if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
+            intakeIn();
+        } else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+            intakeOut();
+        } else {
+            intakeStop();
+        }
     }
 
 }
