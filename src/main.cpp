@@ -170,7 +170,6 @@ void initialize() {
         }
     });
     // chassis.setPose(0, 0, 0);
-    chassis.setPose(34, -56.5, 0);
 }
 
 
@@ -206,6 +205,7 @@ ASSET(firstBallBackwards_txt);
 ASSET(path2_txt);
 
 void far_side_auton() {
+    chassis.setPose(34, -56.5, 0);
     // ball 1
     intakeIn();
     chassis.moveToPoint(23, 0, 3000, {.minSpeed = 5, .earlyExitRange = 5}, false);
@@ -257,11 +257,12 @@ void far_side_auton() {
 }
 
 void close_side_auton() {
-    chassis.moveToPoint(37, 12, 3000, {forwards = true, .minSpeed = 25, .earlyExitRange = 15});
+    chassis.setPose(35, 57, -180);
+    chassis.moveToPoint(37, 12, 3000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15});
     chassis.turnToHeading(-90, 2000);
-    chassis.moveToPoint(8, 12, 3000, {forwards = true, .minSpeed = 25, .earlyExitRange = 15});
-    chassis.moveToPose(53, 53, -135, 3000, {forwards = true, .minSpeed = 25, .earlyExitRange = 15});
-    chassis.moveToPose(38, 56, -90, 3000, {forwards = true, .minSpeed = 25, .earlyExitRange = 15});
+    chassis.moveToPoint(8, 12, 3000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15});
+    chassis.moveToPose(53, 53, -135, 3000, {.forwards = false});
+    chassis.moveToPose(38, 56, -90, 3000, {.forwards = true});
     chassis.moveToPose(7, 59, -90, 3000);
 }
 
