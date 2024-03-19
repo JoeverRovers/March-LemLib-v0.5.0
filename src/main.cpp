@@ -256,7 +256,14 @@ void far_side_auton() {
     
 }
 
-void close_side_auton() {}
+void close_side_auton() {
+    chassis.moveToPoint(37, 12, 3000, {forwards = true, .minSpeed = 25, .earlyExitRange = 15});
+    chassis.turnToHeading(-90, 2000);
+    chassis.moveToPoint(8, 12, 3000, {forwards = true, .minSpeed = 25, .earlyExitRange = 15});
+    chassis.moveToPose(53, 53, -135, 3000, {forwards = true, .minSpeed = 25, .earlyExitRange = 15});
+    chassis.moveToPose(38, 56, -90, 3000, {forwards = true, .minSpeed = 25, .earlyExitRange = 15});
+    chassis.moveToPose(7, 59, -90, 3000);
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
