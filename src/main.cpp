@@ -98,6 +98,12 @@ void intakeStop() {
 	intake.move(0);
 }
 
+void intakeShoot() {
+    intakeOut();
+    pros::delay(400);
+    intakeStop();
+}
+
 void raiseBackWings(){
 	backLeft.set_value(true);
 	backRight.set_value(true);
@@ -164,7 +170,7 @@ void initialize() {
         }
     });
     // chassis.setPose(0, 0, 0);
-    chassis.setPose(34, -54, 0);
+    chassis.setPose(34, -56.5, 0);
 }
 
 
@@ -196,52 +202,56 @@ void auton_Skills() {
 
 }
 
-ASSET(firstPathv2_txt);
+ASSET(firstBallBackwards_txt);
 ASSET(path2_txt);
 
 void far_side_auton() {
+    // ball 1
     intakeIn();
     chassis.moveToPoint(23, 0, 3000, {.minSpeed = 5, .earlyExitRange = 5}, false);
-    chassis.moveToPoint(36, -50, 4000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 15});
+    chassis.turnToHeading(0, 700, {.minSpeed = 5, .earlyExitRange = 10}, true);
+    // chassis.moveToPoint(24, -50, 4000, {.forwards = false, .minSpeed = 10, .earlyExitRange = 15});
+    chassis.follow(firstBallBackwards_txt, 10, 2000, false);
     chassis.turnToHeading(45, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
-    intakeOut();
-    pros::delay(400);
-    intakeStop();
-    chassis.moveToPose(0, -60, -90, 4000, {.minSpeed = 70, .earlyExitRange = 3}, false);
+    intakeShoot();
+
+
+    //ball 2
+    chassis.turnToHeading(-90, 2000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+    chassis.moveToPoint(6, -60, 4000, {.minSpeed = 70, .earlyExitRange = 3}, false);
     intakeIn();
     // chassis.follow(firstPathv2_txt, 9, 4000, false);
-    chassis.moveToPoint(48, -58, 4000, {.forwards = false, .minSpeed = 30, .earlyExitRange = 15});
+    //curve
+    chassis.moveToPoint(36, -49, 4000, {.forwards = false, .minSpeed = 30, .earlyExitRange = 15});
     lowerBackWings();
     chassis.turnToHeading(-45, 1000, {.minSpeed = 20, .earlyExitRange = 10}, false);
-    chassis.moveToPose(60, -20, -180, 3000, {.forwards = false, .minSpeed = 70, .earlyExitRange = 3});
+    chassis.moveToPose(60, -20, -180, 1500, {.forwards = false, .minSpeed = 90, .earlyExitRange = 3}, false);
 
-    intakeStop();
-    chassis.moveToPoint(60, -43, 1000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 15});
-    chassis.turnToHeading(0, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
-    chassis.moveToPoint(60, -20, 4000, {.minSpeed = 20, .earlyExitRange = 3}, false);
-    intakeOut();
-    pros::delay(400);
-    intakeStop();
+    raiseBackWings();
+    //second shove
+    chassis.moveToPoint(60, -53, 3000, {.forwards = true, .minSpeed = 10, .earlyExitRange = 15});
+    chassis.turnToHeading(0, 3000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+    chassis.moveToPoint(60, -20, 800, {.minSpeed = 20, .earlyExitRange = 3}, false);
+    intakeShoot();
+
+
+    //back up and approach triball
     chassis.moveToPoint(58, -43, 1000, {.forwards = false, .minSpeed = 15, .earlyExitRange = 15}, false);
     chassis.turnToHeading(-60, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
 
-    chassis.moveToPoint(4, -20, 4000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
+    //first triball
+    chassis.moveToPoint(4, -34, 4000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
     intakeIn();
-    chassis.turnToHeading(90, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
-    intakeStop();
-    chassis.moveToPoint(48, 0, 2000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
-    intakeOut();
-    pros::delay(400);
-    intakeStop();
-    chassis.turnToHeading(-90, 1000, {.minSpeed = 5, .earlyExitRange = 10});
-    chassis.moveToPoint(4, 4, 4000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
+    chassis.turnToPoint(48, 0, 3000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+    intakeShoot();
+    chassis.turnToHeading(0, 2000, {.minSpeed = 5, .earlyExitRange = 10});
+    chassis.moveToPoint(-4, 6, 4000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
     intakeIn();
-    chassis.turnToHeading(90, 1000, {.minSpeed = 5, .earlyExitRange = 10}, false);
+    chassis.turnToHeading(90, 3000, {.minSpeed = 5, .earlyExitRange = 10}, false);
     intakeStop();
-    chassis.moveToPoint(48, 0, 2000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
-    intakeOut();
-    pros::delay(400);
-    intakeStop();
+    lowerFrontWings();
+    chassis.moveToPoint(48, 0, 3000, {.forwards = true, .minSpeed = 25, .earlyExitRange = 15}, false);
+    intakeShoot();
 
     
 }
