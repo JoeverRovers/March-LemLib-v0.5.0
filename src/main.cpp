@@ -281,7 +281,7 @@ void close_side_auton() {
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 void autonomous() {
-    far_side_auton();
+    close_side_auton();
 }
 
 /**
